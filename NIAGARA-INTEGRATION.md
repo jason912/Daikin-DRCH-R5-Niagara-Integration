@@ -16,8 +16,8 @@ We shipped **route 3** because the site needed **write** capability that the off
 ## A working edge-gateway shape
 
 ```
-Daikin indoor units (×3)
-        │  remote-controller line (parallel)
+Daikin single-split ducted indoor units (×3, DQ series)
+        │  P1P2 wired-remote (controller) line, in parallel
    DRCH-R5 P-board
         │  RS-485, 9600 8N1, no parity
    Edge IPC (Linux)
@@ -48,6 +48,14 @@ Where the gateway presents a legacy BACnet-style register numbering but Niagara 
 - **Digital points:** `Modbus address = BACnet register + 1`
 
 These are easy to get "almost right" — a point that is off by one reads a neighbour's value and looks plausible.
+
+## Numeric, not Boolean
+
+If your gateway implements only **holding registers** (FC03/FC06) — as ours does, so that it can serve the legacy
+point table and the hidden control addresses uniformly — then there are **no coils and no discrete inputs** on the
+wire. Niagara's `BooleanPoint` can only be built on a coil/discrete register type, so every point must be created as
+a **`NumericPoint`**; use linked **`Enum`** points to render 0/1 as Off/On, Normal/Alarm, and so on. Fighting this
+rule instead of following it will cost you a day of "the point won't compile".
 
 ## The write-control gotcha
 

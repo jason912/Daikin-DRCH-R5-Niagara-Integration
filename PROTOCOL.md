@@ -4,6 +4,11 @@ The DRCH-R5 interface board speaks a master/slave serial protocol derived from t
 **#625** monitoring specification (邮电规格 625 号基准). It predates Modbus, is ASCII-hex encoded, and is
 documented almost exclusively in Chinese.
 
+The board is used with **Daikin single-split ducted indoor units** (one outdoor : one indoor) — e.g. the
+**SkyAir DQ series** medium-static-pressure duct type, **not VRV** — which are common in data rooms. On the Daikin
+side it taps the indoor unit's **P1P2** wired-remote (controller) line and re-presents the data as the #625 serial
+protocol.
+
 These notes describe what we verified on a live site and cross-checked against the vendor's original
 "社外版" (external) specification. **Always confirm against your own vendor document** — variants exist.
 
@@ -23,7 +28,8 @@ These notes describe what we verified on a live site and cross-checked against t
 > **no parity**. With odd parity the board simply never answers, and nothing in the error path hints at parity.
 
 Connection to the Daikin side: the board is wired **in parallel with the indoor unit's wired-remote
-(controller) line** — it acts as a second remote controller. Up to three indoor units per board, one line each.
+(controller) line — the P1P2 two-wire bus** — and acts as a second remote controller. Up to three indoor units
+per board, one LINE each.
 
 ## 2. Frame layout
 
